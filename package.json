@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/DyerMaker42/Tiny_App/issues"
   },
-  "homepage": "https://github.com/DyerMaker42/Tiny_App#readme"
+  "homepage": "https://github.com/DyerMaker42/Tiny_App#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
