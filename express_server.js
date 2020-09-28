@@ -44,3 +44,7 @@ app.get("/urls/:shortURL", (req, res) => {
 });
 
 
+app.post("/urls", (req,res)=>{
+  console.log(req.body)
+  res.send("OK");
+});
