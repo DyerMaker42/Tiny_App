@@ -11,6 +11,21 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+//generates 6 digit string (ie Uoh87x)
+const generateRandomString = () => {
+  // give set of characters to choose
+  const lettersNumbers = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890";
+  //generate random number
+  let randNumber = () => {
+    return Math.floor(Math.random() * 63);
+  };
+  //loop through six digits
+  let array = [];
+  for (let i = 0; i < 6; i++) {
+    array.push(lettersNumbers.charAt(randNumber()))
+  }
+  return array.join('');
+}
 
 app.get("/", (req, res) => {
   res.send("hello!");
@@ -44,7 +59,7 @@ app.get("/urls/:shortURL", (req, res) => {
 });
 
 
-app.post("/urls", (req,res)=>{
+app.post("/urls", (req, res) => {
   console.log(req.body)
   res.send("OK");
 });
