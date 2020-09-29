@@ -58,17 +58,20 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars)
 });
 
+//redirects to long URL
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL)
+});
 
+//POST Routes
+  //adds new URL to db
+  
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL)
   urlDatabase[newURL] = req.body.longURL;
   res.redirect(`/urls/${newURL}`);
-});
-//redirects to long URL
-app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL)
 });
 
 //actually deletes a URL
