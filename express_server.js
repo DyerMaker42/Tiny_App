@@ -83,8 +83,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 //edits a URL
 app.post("/urls/:id", (req,res) => {
-  console.log(req.params.id, "what im looking for")
-  console.log(req.body, "req.req body")
+  // console.log(req.params.id, "what im looking for")
+  // console.log(req.body, "req.req body")
   urlDatabase[req.params.id] = req.body.longURL
   //console.log(res,"long edit")
   res.redirect("/urls")
