@@ -62,7 +62,6 @@ app.get("/urls/:shortURL", (req, res) => {
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   urlDatabase[newURL]=req.body;
-  console.log(req.body);
-  console.log(urlDatabase.newURL, "hola")
-  res.send("OK");
+  const templateVars = {urlDatabase}
+  res.render(`/urls/${newURL}`,templateVars);
 });
