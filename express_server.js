@@ -66,7 +66,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 //POST Routes
   //adds new URL to db
-  
+
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL)
@@ -78,5 +78,14 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   //console.log(req.params.shortURL)
   delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls")
+})
+
+//edits a URL
+app.post("/urls/:id", (req,res) => {
+  console.log(req.params.id, "what im looking for")
+  console.log(req.body, "req.req body")
+  urlDatabase[req.params.id] = req.body.longURL
+  //console.log(res,"long edit")
   res.redirect("/urls")
 })
