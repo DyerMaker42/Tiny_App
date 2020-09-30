@@ -160,7 +160,7 @@ app.post("/urls/:id", (req, res) => {
 //sets cookie
 app.post("/login", (req, res) => {
   //console.log(req.body);
-  res.cookie("username", req.body.username);
+  res.cookie("user_id", getUserbyEmail(req.body.userEmail));
   res.redirect("/urls");
 });
 //logouts by clearing cookie
@@ -174,10 +174,21 @@ app.post('/register', (req, res) => {
   // console.log(req.body, "req.body");
   // console.log(req.params, "req.params");
   let newID = generateRandomString();
+  //if email or pass is empty string
+
+  if(!req.body.email&&!req.body.password){
+    res.status(400).send('no field can be left blank');
+    return;
+  }
+  
+  if(users[req.body.email]){
+    res.status(400).send('User Already exists, please login instead')
+    return;
+  } 
   users[newID]={id:newID,
   email:req.body.email,
   password: req.body.password }
   console.log(users);
-  res.cookie("user_id", req.body.email)
+  res.cookie("user_id", getUserbyEmail(req.body.email))
   res.redirect("/urls")
 })
