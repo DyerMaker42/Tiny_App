@@ -114,7 +114,7 @@ app.post("/logout", (req, res) => {
 })
 
 //registers a user
-app.get("/register", (req,res) => {
+app.get("/register", (req, res) => {
   let username = req.cookies ? req.cookies["username"] : null;
 
   const templateVars = { username: username };
