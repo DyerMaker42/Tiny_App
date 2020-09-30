@@ -29,7 +29,7 @@ const users = {
   "kungFooKenny": {
     id: "kungFooKenny",
     email: "kenny@pulitzer.net",
-    password:"be-humble"
+    password: "be-humble"
   }
 };
 
@@ -133,7 +133,7 @@ app.post("/urls/:id", (req, res) => {
 });
 //sets cookie
 app.post("/login", (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   res.cookie("username", req.body.username);
   res.redirect("/urls");
 });
@@ -142,3 +142,16 @@ app.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/urls");
 });
+
+//handles registration form data
+app.post('/register', (req, res) => {
+  // console.log(req.body, "req.body");
+  // console.log(req.params, "req.params");
+  let newID = generateRandomString();
+  users[newID]={id:newID,
+  email:req.body.email,
+  password: req.body.password }
+  console.log(users);
+  res.cookie("username", req.body.email)
+  res.redirect("/urls")
+})
