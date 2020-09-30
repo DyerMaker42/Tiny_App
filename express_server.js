@@ -83,7 +83,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let username = req.cookies ? req.cookies["user_id"] : null;
+  let username = req.cookies ? req.cookies["user_ID"] : null;
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
