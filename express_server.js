@@ -152,6 +152,6 @@ app.post('/register', (req, res) => {
   email:req.body.email,
   password: req.body.password }
   console.log(users);
-  res.cookie("username", req.body.email)
+  res.cookie("user_id", req.body.email)
   res.redirect("/urls")
 })
