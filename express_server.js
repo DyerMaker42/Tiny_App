@@ -50,6 +50,30 @@ const generateRandomString = () => {
   return array.join('');
 };
 
+//helper function that retrieves user id bu email, 
+function getUserbyEmail(userEmail, users) {
+  for (let key in users) {
+    //console.log(key,"key")
+    if (users[key].email === userEmail) {
+      return users[key].id
+    }
+
+  }
+
+};
+//helperfunction that outputs values based in which input and desired output
+function getUserby(inputValue, users, inputParameter, desiredOutput) {
+  for (let key in users) {
+    //console.log(key,"key")
+    if (users[key][inputParameter] === inputValue) {
+      return users[key][desiredOutput]
+    }
+
+  }
+
+}
+
+//View routes
 app.get("/", (req, res) => {
   res.send("hello!");
 });
@@ -71,14 +95,15 @@ app.get("/urls", (req, res) => {
   let user_id = req.cookies ? req.cookies["user_id"] : null;
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
-  const templateVars = { urls: urlDatabase, user_id };
+  const templateVars = { urls: urlDatabase, users, user_id };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
   let user_id = req.cookies ? req.cookies["user_id"] : null;
 
-  const templateVars = { user_id};
+  const templateVars = { user_id, 
+  users};
   res.render("urls_new", templateVars);
 });
 
@@ -87,7 +112,8 @@ app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
-    user_id
+    user_id,
+    users
   };
   res.render("urls_show", templateVars);
 });
@@ -102,7 +128,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/register", (req, res) => {
   let user_id = req.cookies ? req.cookies["user_id"] : null;
 
-  const templateVars = { user_id };
+  const templateVars = { user_id, users };
   res.render("registration", templateVars);
 });
 
