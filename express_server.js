@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -46,19 +46,27 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase,username: req.cookies["username"] };
+  let username = req.cookies ? req.cookies["username"] : null;
+  console.log(username,"username")
+  console.log(req.cookies, "req.cookies")
+  const templateVars = { urls: urlDatabase, username: username };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  const templateVars = {username: req.cookies["username"]}
-  res.render("urls_new");
+  let username = req.cookies ? req.cookies["username"] : null;
+
+  const templateVars = { username: username };
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = { shortURL: req.params.shortURL, 
-                        longURL: urlDatabase[req.params.shortURL],
-                        username: req.cookies["username"]}
+  let username = req.cookies ? req.cookies["username"] : null;
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL],
+    username
+  }
   res.render("urls_show", templateVars)
 });
 
@@ -69,7 +77,7 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 //POST Routes
-  //adds new URL to db
+//adds new URL to db
 
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
@@ -86,16 +94,21 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 })
 
 //edits a URL
-app.post("/urls/:id", (req,res) => {
+app.post("/urls/:id", (req, res) => {
   // console.log(req.params.id, "what im looking for")
   // console.log(req.body, "req.req body")
   urlDatabase[req.params.id] = req.body.longURL
   //console.log(res,"long edit")
   res.redirect("/urls")
 })
-
-app.post("/login", (req,res) => {
+//sets cookie
+app.post("/login", (req, res) => {
   console.log(req.body)
-  res.cookie("username",req.body.username)
+  res.cookie("username", req.body.username)
+  res.redirect("/urls")
+})
+//logouts by clearing cookie
+app.post("/logout", (req, res) => {
+  res.clearCookie("username")
   res.redirect("/urls")
 })
