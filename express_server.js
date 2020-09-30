@@ -68,26 +68,26 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let username = req.cookies ? req.cookies["user_id"] : null;
-  console.log(username, "user_id");
-  console.log(req.cookies, "req.cookies");
-  const templateVars = { urls: urlDatabase, username: username };
+  let user_id = req.cookies ? req.cookies["user_id"] : null;
+  // console.log(username, "user_id");
+  // console.log(req.cookies, "req.cookies");
+  const templateVars = { urls: urlDatabase, user_id };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  let username = req.cookies ? req.cookies["user_id"] : null;
+  let user_id = req.cookies ? req.cookies["user_id"] : null;
 
-  const templateVars = { username: username };
+  const templateVars = { user_id};
   res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let username = req.cookies ? req.cookies["user_ID"] : null;
+  let user_id = req.cookies ? req.cookies["user_id"] : null;
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
-    username
+    user_id
   };
   res.render("urls_show", templateVars);
 });
