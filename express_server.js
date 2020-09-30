@@ -56,6 +56,8 @@ function getUserbyEmail(userEmail, users) {
     //console.log(key,"key")
     if (users[key].email === userEmail) {
       return users[key].id
+    } else {
+      return null;
     }
 
   }
@@ -102,8 +104,10 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let user_id = req.cookies ? req.cookies["user_id"] : null;
 
-  const templateVars = { user_id, 
-  users};
+  const templateVars = {
+    user_id,
+    users
+  };
   res.render("urls_new", templateVars);
 });
 
@@ -160,7 +164,7 @@ app.post("/urls/:id", (req, res) => {
 //sets cookie
 app.post("/login", (req, res) => {
   //console.log(req.body);
-  res.cookie("user_id", getUserbyEmail(req.body.userEmail));
+  res.cookie("user_id", getUserbyEmail(req.body.userEmail, users));
   res.redirect("/urls");
 });
 //logouts by clearing cookie
@@ -176,18 +180,20 @@ app.post('/register', (req, res) => {
   let newID = generateRandomString();
   //if email or pass is empty string
 
-  if(!req.body.email&&!req.body.password){
+  if (!req.body.email && !req.body.password) {
     res.status(400).send('no field can be left blank');
     return;
   }
-  
-  if(users[req.body.email]){
+let checkUser = getUserbyEmail(req.body.email, users)
+  if (users[checkUser]) {
     res.status(400).send('User Already exists, please login instead')
     return;
-  } 
-  users[newID]={id:newID,
-  email:req.body.email,
-  password: req.body.password }
+  }
+  users[newID] = {
+    id: newID,
+    email: req.body.email,
+    password: req.body.password
+  }
   console.log(users);
   res.cookie("user_id", getUserbyEmail(req.body.email))
   res.redirect("/urls")
