@@ -112,3 +112,8 @@ app.post("/logout", (req, res) => {
   res.clearCookie("username")
   res.redirect("/urls")
 })
+
+//registers a user
+app.get("/register", (req,res) => {
+  res.render("/registration")
+})
