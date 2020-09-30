@@ -76,6 +76,14 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+//renders registration page
+app.get("/register", (req, res) => {
+  let username = req.cookies ? req.cookies["username"] : null;
+
+  const templateVars = { username: username };
+  res.render("registration", templateVars);
+});
+
 //POST Routes
 //adds new URL to db
 
@@ -111,12 +119,4 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/urls");
-});
-
-//registers a user
-app.get("/register", (req, res) => {
-  let username = req.cookies ? req.cookies["username"] : null;
-
-  const templateVars = { username: username };
-  res.render("registration", templateVars);
 });
