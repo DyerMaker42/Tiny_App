@@ -231,6 +231,8 @@ app.post("/urls/:id", (req, res) => {
   const urlRecord = urlDatabase[shortURL];
   if (user === urlRecord.userID) {
   urlDatabase[shortURL].longURL = req.body.longURL;
+  } else if (user !== urlRecord.userID){
+    res.status(401).send("S0rry hack3rz, no mischief for you")
   }
   //console.log(res,"long edit")
   res.redirect("/urls");
