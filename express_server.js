@@ -113,6 +113,7 @@ app.get("/urls", (req, res) => {
   if (!user_id) {
     res.redirect("/login")
   }
+  let urls = urlsForUser(user_id);
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
   //console.log(user);
