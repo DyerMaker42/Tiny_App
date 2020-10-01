@@ -146,12 +146,19 @@ app.get("/urls/new", (req, res) => {
 //edit individual URLS page
 app.get("/urls/:shortURL", (req, res) => {
   const user_id = req.cookies["user_id"];
-  const user = users[user_id];
-  const shortURL = req.params.shortURL;
-  const urlRecord = urlDatabase[shortURL]
   if (!user_id) {
     res.redirect("/login")
   }
+  
+  const user = users[user_id];
+  const shortURL = req.params.shortURL;
+  const urlRecord = urlDatabase[shortURL];
+  //let userURLs = urlsForUser(user_id);
+//checking if user should have access to page
+  if(urlRecord.userID !== user_id){
+    res.status(401).send("You do not have access to this URL, please login with appropriate credentials and try again")
+  }
+
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlRecord.longURL,
