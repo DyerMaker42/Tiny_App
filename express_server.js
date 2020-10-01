@@ -240,13 +240,13 @@ app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPass = req.body.password;
   const user = getUserbyEmail(inputEmail, users);
-  const storedPass = (getUserby(inputEmail, users, "email", "password"));
-  const goodPass = bcrypt.compareSync(`${inputPass}`, storedPass);
-  
   if (!user) {
     res.status(403).send("Sorry that email cannot be found, please try again");
   }
-  if (user && (getUserby(inputEmail, users, "email", "password") !== inputPass)) {
+  const storedPass = (getUserby(inputEmail, users, "email", "password"));
+  const goodPass = bcrypt.compareSync(inputPass, storedPass);
+  console.log(goodPass)
+  if (user && !goodPass) {
     res.status(403).send("Sorry, username and password combination is invalid, please try again");
   }
   console.log(user, "USER TEST");
