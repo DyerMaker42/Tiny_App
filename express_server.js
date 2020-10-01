@@ -93,7 +93,7 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   const user = users[user_id];
-  if(!req.cookies){
+  if(!req.cookies["user_id"]){
     res.redirect("/login")
   }
   // console.log(username, "user_id");
@@ -111,7 +111,11 @@ app.get("/urls/new", (req, res) => {
     user,
     users
   };
+  if(!req.cookies["user_id"]){
+    res.redirect("/login")
+  } else{
   res.render("urls_new", templateVars);
+  }
 });
 //edit individual URLS page
 app.get("/urls/:shortURL", (req, res) => {
