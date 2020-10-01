@@ -175,15 +175,16 @@ app.post("/urls/:id", (req, res) => {
 app.post("/login", (req, res) => {
 console.log(req.body)
   const user = getUserbyEmail(req.body.email, users);
-  const goodPass = getUserby(req.body.email,users,email,password) === req.body.password;
+  const goodPass = getUserby(req.body.email,users,"email","password") === req.body.password;
   if(!user){
     res.status(403).send("Sorry that email cannot be found, please try again")
   }
-  if (user && (getUserby(req.body.email,users,email,password) !== req.body.password)){
+  if (user && (getUserby(req.body.email,users,"email","password") !== req.body.password)){
     res.status(403).send("Sorry, username and password combination is invalid, please try again")
   }
+  console.log(user,"USER TEST")
   if(user && goodPass){
-    res.cookie("user_id", user)
+    res.cookie("user_id", user.id)
     res.redirect("/urls")
   }
   //If a user with that e-mail cannot be found, return a response with a 403 status code.
