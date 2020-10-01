@@ -90,7 +90,7 @@ function urlsForUser(id) {
   for (let urlRecord in urlDatabase) {
     //console.log(key,"key")
     if (urlDatabase[urlRecord].userID === id) {
-       outputObject[urlRecord] = urlDatabase[urlRecord];
+      outputObject[urlRecord] = urlDatabase[urlRecord];
     }
   }
   return outputObject;
@@ -118,7 +118,7 @@ app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   const user = users[user_id];
   if (!user_id) {
-    res.redirect("/login")
+    res.redirect("/login");
   }
   let userURLs = urlsForUser(user_id);
   console.log((userURLs), "USER URLS TEST");
@@ -138,7 +138,7 @@ app.get("/urls/new", (req, res) => {
     users
   };
   if (!req.cookies["user_id"]) {
-    res.redirect("/login")
+    res.redirect("/login");
   } else {
     res.render("urls_new", templateVars);
   }
@@ -147,16 +147,16 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const user_id = req.cookies["user_id"];
   if (!user_id) {
-    res.redirect("/login")
+    res.redirect("/login");
   }
   
   const user = users[user_id];
   const shortURL = req.params.shortURL;
   const urlRecord = urlDatabase[shortURL];
   //let userURLs = urlsForUser(user_id);
-//checking if user should have access to page
-  if(urlRecord.userID !== user_id){
-    res.status(401).send("You do not have access to this URL, please login with appropriate credentials and try again")
+  //checking if user should have access to page
+  if (urlRecord.userID !== user_id) {
+    res.status(401).send("You do not have access to this URL, please login with appropriate credentials and try again");
   }
 
   const templateVars = {
@@ -189,7 +189,7 @@ app.get("/login", (req, res) => {
   const user = users[user_id];
   const templateVars = { user, users };
   if (req.cookies["user_id"]) {
-    res.redirect("/urls")
+    res.redirect("/urls");
   }
   res.render("login", templateVars);
 });
@@ -201,12 +201,12 @@ app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL);
   if (!req.cookies["user_id"]) {
-    res.redirect("/login")
+    res.redirect("/login");
   }
   urlDatabase[newURL] = {
     longURL: req.body.longURL,
     userID: req.cookies["user_id"]
-  }
+  };
   res.redirect(`/urls/${newURL}`);
 });
 
@@ -226,13 +226,13 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   // console.log(req.params.id, "what im looking for")
   // console.log(req.body, "req.req body")
-  let shortURL = req.params.id
+  let shortURL = req.params.id;
   const user = req.cookies["user_id"];
   const urlRecord = urlDatabase[shortURL];
   if (user === urlRecord.userID) {
-  urlDatabase[shortURL].longURL = req.body.longURL;
-  } else if (user !== urlRecord.userID){
-    res.status(401).send("S0rry hack3rz, no mischief for you")
+    urlDatabase[shortURL].longURL = req.body.longURL;
+  } else if (user !== urlRecord.userID) {
+    res.status(401).send("S0rry hack3rz, no mischief for you");
   }
   //console.log(res,"long edit")
   res.redirect("/urls");
@@ -294,4 +294,4 @@ app.post('/register', (req, res) => {
   }
 });
 
-console.log(urlsForUser("aJ48lW"))
+console.log(urlsForUser("aJ48lW"));
