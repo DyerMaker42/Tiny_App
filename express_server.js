@@ -200,12 +200,12 @@ app.get("/login", (req, res) => {
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL);
+  if (!req.cookies["user_id"]) {
+    res.redirect("/login")
+  }
   urlDatabase[newURL] = {
     longURL: req.body.longURL,
     userID: req.cookies["user_id"]
-  }
-  if (!req.cookies["user_id"]) {
-    res.redirect("/login")
   }
   res.redirect(`/urls/${newURL}`);
 });
