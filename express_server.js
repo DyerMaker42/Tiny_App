@@ -137,7 +137,7 @@ app.get("/register", (req, res) => {
   const templateVars = { user, users };
   res.render("registration", templateVars);
 });
-
+//===========================================================
 //POST Routes
 //adds new URL to db
 
