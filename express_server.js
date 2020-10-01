@@ -213,8 +213,11 @@ app.post("/urls", (req, res) => {
 //actually deletes a URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   //console.log(req.params.shortURL)
-  if (req.cookies["user_id"]) {
-    delete urlDatabase[req.params.shortURL];
+  const shortURL = req.params.shortURL;
+  const user = req.cookies["user_id"];
+  const urlRecord = urlDatabase[shortURL];
+  if (user === urlRecord.userID) {
+    delete urlRecord;
   }
   res.redirect("/urls");
 });
@@ -223,8 +226,12 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   // console.log(req.params.id, "what im looking for")
   // console.log(req.body, "req.req body")
-  let id = req.params.id
-  urlDatabase[id].longURL = req.body.longURL;
+  let shortURL = req.params.id
+  const user = req.cookies["user_id"];
+  const urlRecord = urlDatabase[shortURL];
+  if (user === urlRecord.userID) {
+  urlDatabase[shortURL].longURL = req.body.longURL;
+  }
   //console.log(res,"long edit")
   res.redirect("/urls");
 });
