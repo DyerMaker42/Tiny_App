@@ -12,7 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(cookieParser());
 app.use(cookieSession({
   user_ID:'session',
-  keys:['scaryKeyScary']
+  keys:['scaryKeyScary'],
+  maxAge: 5*60*1000
 }))
 //app constants and variables---------------------------------
 //old DB
@@ -65,21 +66,21 @@ const generateRandomString = () => {
 };
 
 ///**helper function that retrieves user id bu email,///
-function getUserbyEmail(userEmail, users) {
-  for (let id in users) {
+function getUserbyEmail(userEmail, database) {
+  for (let id in database) {
     //console.log(key,"key")
-    if (users[id].email === userEmail) {
-      return users[id];
+    if (database[id].email === userEmail) {
+      return database[id];
     }
   }
 
 }
 //helperfunction that outputs values based in which input and desired output
-function getUserby(inputValue, users, inputParameter, desiredOutput) {
-  for (let key in users) {
+function getUserby(inputValue, database, inputParameter, desiredOutput) {
+  for (let key in database) {
     //console.log(key,"key")
-    if (users[key][inputParameter] === inputValue) {
-      return users[key][desiredOutput];
+    if (database[key][inputParameter] === inputValue) {
+      return database[key][desiredOutput];
     }
 
   }
@@ -274,8 +275,7 @@ app.post("/login", (req, res) => {
 });
 //logouts by clearing cookie
 app.post("/logout", (req, res) => {
-  res.clearCookie("express:sess.sig");
-  res.clearCookie("express:sess")
+  req.session = null
   res.redirect("/urls");
 });
 
