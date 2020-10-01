@@ -153,6 +153,9 @@ app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL);
   urlDatabase[newURL] = req.body.longURL;
+  if(!req.cookie){
+    res.redirect("/login")
+  }
   res.redirect(`/urls/${newURL}`);
 });
 
