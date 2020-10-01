@@ -245,7 +245,7 @@ app.post("/login", (req, res) => {
   }
   const storedPass = (getUserby(inputEmail, users, "email", "password"));
   const goodPass = bcrypt.compareSync(inputPass, storedPass);
-  console.log(goodPass)
+  console.log(goodPass);
   if (user && !goodPass) {
     res.status(403).send("Sorry, username and password combination is invalid, please try again");
   }
