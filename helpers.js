@@ -48,4 +48,4 @@ const urlsForUser = (id) => {
   return outputObject;
 }
 
-module.exports= {generateRandomString, getUserbyEmail, getUserby, urlsForUser}
+module.exports = { generateRandomString, getUserbyEmail, getUserby, urlsForUser }

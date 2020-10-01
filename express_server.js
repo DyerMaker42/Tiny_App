@@ -15,9 +15,9 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(cookieParser());
 app.use(cookieSession({
-  user_ID:'session',
-  keys:['scaryKeyScary'],
-  maxAge: 5*60*1000
+  user_ID: 'session',
+  keys: ['scaryKeyScary'],
+  maxAge: 5 * 60 * 1000
 }));
 //app constants and variables---------------------------------
 //old DB
@@ -49,65 +49,13 @@ const users = {
     email: "kenny@pulitzer.net",
     password: "$2b$10$A4IaTVv9lpzO9XR1gf4BLOWMVe99J20QyPF2H5rDy4YD8Lf2c49gG"
   },
-  
+
 };
-/*
-//app functions================================================
-//generates 6 digit string (ie Uoh87x)
-const generateRandomString = () => {
-  // give set of characters to choose
-  const lettersNumbers = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890";
-  //generate random number
-  let randNumber = () => {
-    return Math.floor(Math.random() * 63);
-  };
-  //loop through six digits
-  let array = [];
-  for (let i = 0; i < 6; i++) {
-    array.push(lettersNumbers.charAt(randNumber()));
-  }
-  return array.join('');
-};
-*/
-
-///**helper function that retrieves user id bu email,///
-function getUserbyEmail(userEmail, database) {
-  for (let id in database) {
-    //console.log(key,"key")
-    if (database[id].email === userEmail) {
-      return database[id];
-    }
-  }
-
-}
-//helperfunction that outputs values based in which input and desired output
-function getUserby(inputValue, database, inputParameter, desiredOutput) {
-  for (let key in database) {
-    //console.log(key,"key")
-    if (database[key][inputParameter] === inputValue) {
-      return database[key][desiredOutput];
-    }
-
-  }
-
-}
-/*id is user_id, returns entire URL record, longURL and userID are keys of returned object.*/
-function urlsForUser(id) {
-  let outputObject = {};
-  for (let urlRecord in urlDatabase) {
-    //console.log(key,"key")
-    if (urlDatabase[urlRecord].userID === id) {
-      outputObject[urlRecord] = urlDatabase[urlRecord];
-    }
-  }
-  return outputObject;
-}
 
 //View routes
 app.get("/", (req, res) => {
   res.send("hello!");
 });
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
@@ -125,7 +73,7 @@ app.get("/urls", (req, res) => {
   const user_id = req.session.user_id;
   console.log(user_id, "USER_ID")
   const user = users[user_id];
-  console.log(user,"UUSER TEST")
+  console.log(user, "UUSER TEST")
   if (!user_id) {
     res.redirect("/login");
   }
@@ -159,7 +107,7 @@ app.get("/urls/:shortURL", (req, res) => {
   if (!user_id) {
     res.redirect("/login");
   }
-  
+
   const user = users[user_id];
   const shortURL = req.params.shortURL;
   const urlRecord = urlDatabase[shortURL];
@@ -211,7 +159,7 @@ app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   let cookie = req.session.user_id
   console.log(req.body.longURL, "TESTY");
-  const inputURL= req.body.longURL;
+  const inputURL = req.body.longURL;
   if (!cookie) {
     res.redirect("/login");
   }
