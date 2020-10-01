@@ -99,7 +99,7 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   const user = users[user_id];
-  if (!req.cookies["user_id"]) {
+  if (!user_id) {
     res.redirect("/login")
   }
   // console.log(username, "user_id");
@@ -161,7 +161,9 @@ app.get("/login", (req, res) => {
   let user_id = req.cookies["user_id"];
   const user = users[user_id];
   const templateVars = { user, users };
-
+  if(req.cookies["user_id"]){
+    res.redirect("/urls")
+  }
   res.render("login", templateVars);
 });
 //===========================================================
@@ -175,7 +177,7 @@ app.post("/urls", (req, res) => {
     longURL: req.body.longURL,
     userID: req.cookies["user_id"]
   }
-  if (!req.cookie) {
+  if (!req.cookies["user_id"]) {
     res.redirect("/login")
   }
   res.redirect(`/urls/${newURL}`);
@@ -184,7 +186,9 @@ app.post("/urls", (req, res) => {
 //actually deletes a URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   //console.log(req.params.shortURL)
+  if(req.cookies["user_id"]){
   delete urlDatabase[req.params.shortURL];
+  }
   res.redirect("/urls");
 });
 
