@@ -3,7 +3,7 @@ const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const bcrypt =require('bcrypt');
+const bcrypt = require('bcrypt');
 
 
 //app middleware---------------------------------------
@@ -240,7 +240,7 @@ app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPass = req.body.password;
   const user = getUserbyEmail(inputEmail, users);
-  const storedPass = (getUserby(inputEmail, users, "email", "password"))
+  const storedPass = (getUserby(inputEmail, users, "email", "password"));
   const goodPass = bcrypt.compareSync(`${inputPass}`, storedPass);
   
   if (!user) {
@@ -275,7 +275,7 @@ app.post('/register', (req, res) => {
   //if email or pass is empty string
   const inputPassword = req.body.password;
   const inputEmail = req.body.email;
-  const hashedPass = bcrypt.hashSync(inputPassword, 2)
+  const hashedPass = bcrypt.hashSync(inputPassword, 2);
   if (!inputEmail || !inputPassword) {
     res.status(400).send('no field can be left blank');
     //return;
