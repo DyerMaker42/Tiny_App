@@ -50,22 +50,22 @@ const generateRandomString = () => {
   return array.join('');
 };
 
-//helper function that retrieves user id bu email, 
+//helper function that retrieves user id bu email,
 function getUserbyEmail(userEmail, users) {
   for (let id in users) {
     //console.log(key,"key")
     if (users[id].email === userEmail) {
-      return users[id]
+      return users[id];
     }
   }
 
-};
+}
 //helperfunction that outputs values based in which input and desired output
 function getUserby(inputValue, users, inputParameter, desiredOutput) {
   for (let key in users) {
     //console.log(key,"key")
     if (users[key][inputParameter] === inputValue) {
-      return users[key][desiredOutput]
+      return users[key][desiredOutput];
     }
 
   }
@@ -92,10 +92,10 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
-  const user = users[user_id]
+  const user = users[user_id];
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
-  console.log(user)
+  console.log(user);
   const templateVars = { urls: urlDatabase, user, };
   console.log(user_id);
   res.render("urls_index", templateVars);
@@ -143,8 +143,8 @@ app.get("/login", (req,res) => {
   const user = users[user_id];
   const templateVars = { user, users };
 
-  res.render("login", templateVars)
-})
+  res.render("login", templateVars);
+});
 //===========================================================
 //POST Routes
 //adds new URL to db
@@ -173,23 +173,23 @@ app.post("/urls/:id", (req, res) => {
 });
 //sets cookie
 app.post("/login", (req, res) => {
-console.log(req.body)
+  console.log(req.body);
   const user = getUserbyEmail(req.body.email, users);
   const goodPass = getUserby(req.body.email,users,"email","password") === req.body.password;
-  if(!user){
-    res.status(403).send("Sorry that email cannot be found, please try again")
+  if (!user) {
+    res.status(403).send("Sorry that email cannot be found, please try again");
   }
-  if (user && (getUserby(req.body.email,users,"email","password") !== req.body.password)){
-    res.status(403).send("Sorry, username and password combination is invalid, please try again")
+  if (user && (getUserby(req.body.email,users,"email","password") !== req.body.password)) {
+    res.status(403).send("Sorry, username and password combination is invalid, please try again");
   }
-  console.log(user,"USER TEST")
-  if(user && goodPass){
-    res.cookie("user_id", user.id)
-    res.redirect("/urls")
+  console.log(user,"USER TEST");
+  if (user && goodPass) {
+    res.cookie("user_id", user.id);
+    res.redirect("/urls");
   }
   //If a user with that e-mail cannot be found, return a response with a 403 status code.
-////If a user with that e-mail address is located, compare the password given in the form with the existing user's password. If it does not match, return a response with a 403 status code.
-//If both checks pass, set the user_id cookie with the matching user's random ID, then redirect to /urls.
+  ////If a user with that e-mail address is located, compare the password given in the form with the existing user's password. If it does not match, return a response with a 403 status code.
+  //If both checks pass, set the user_id cookie with the matching user's random ID, then redirect to /urls.
   //console.log(user.id, "THIS");
   //res.cookie("user_id", user.id);
 
@@ -211,19 +211,19 @@ app.post('/register', (req, res) => {
     res.status(400).send('no field can be left blank');
     //return;
   }
-  let checkUser = getUserbyEmail(req.body.email, users)
-  console.log(checkUser)
+  let checkUser = getUserbyEmail(req.body.email, users);
+  console.log(checkUser);
   if (checkUser) {
-    res.status(400).send('User Already exists, please login instead')
+    res.status(400).send('User Already exists, please login instead');
     //return;
   } else {
     users[newID] = {
       id: newID,
       email: req.body.email,
       password: req.body.password
-    }
+    };
 
-    res.cookie("user_id", newID)
-    res.redirect("/urls")
+    res.cookie("user_id", newID);
+    res.redirect("/urls");
   }
 });
