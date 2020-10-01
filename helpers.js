@@ -24,7 +24,7 @@ const getUserbyEmail = (userEmail, database) => {
     }
   }
 
-}
+};
 //helperfunction that outputs values based in which input and desired output
 const getUserby = (inputValue, database, inputParameter, desiredOutput) => {
   for (let key in database) {
@@ -35,7 +35,7 @@ const getUserby = (inputValue, database, inputParameter, desiredOutput) => {
 
   }
 
-}
+};
 /*id is user_id, returns entire URL record, longURL and userID are keys of returned object.*/
 const urlsForUser = (id) => {
   let outputObject = {};
@@ -46,6 +46,6 @@ const urlsForUser = (id) => {
     }
   }
   return outputObject;
-}
+};
 
-module.exports = { generateRandomString, getUserbyEmail, getUserby, urlsForUser }
+module.exports = { generateRandomString, getUserbyEmail, getUserby, urlsForUser };

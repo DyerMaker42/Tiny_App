@@ -4,7 +4,7 @@ const PORT = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
-const cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session');
 
 const generateRandomString = require("./helpers");
 const getUserbyEmail = require("./helpers");
@@ -71,13 +71,13 @@ app.get("/hello", (req, res) => {
 //renders url page
 app.get("/urls", (req, res) => {
   const user_id = req.session.user_id;
-  console.log(user_id, "USER_ID")
+  console.log(user_id, "USER_ID");
   const user = users[user_id];
-  console.log(user, "UUSER TEST")
+  console.log(user, "UUSER TEST");
   if (!user_id) {
     res.redirect("/login");
   }
-  console.log("TEST USER ID", user_id)
+  console.log("TEST USER ID", user_id);
   let userURLs = urlsForUser(user_id);
   console.log((userURLs), "USER URLS TEST");
   // console.log(username, "user_id");
@@ -157,7 +157,7 @@ app.get("/login", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
-  let cookie = req.session.user_id
+  let cookie = req.session.user_id;
   console.log(req.body.longURL, "TESTY");
   const inputURL = req.body.longURL;
   if (!cookie) {
@@ -216,7 +216,7 @@ app.post("/login", (req, res) => {
     // old cookie
     //res.cookie("user_id", user.id);
     //new cookie
-    req.session.user_id = user.id
+    req.session.user_id = user.id;
     res.redirect("/urls");
   }
   //If a user with that e-mail cannot be found, return a response with a 403 status code.
@@ -228,7 +228,7 @@ app.post("/login", (req, res) => {
 });
 //logouts by clearing cookie
 app.post("/logout", (req, res) => {
-  req.session = null
+  req.session = null;
   res.redirect("/urls");
 });
 
@@ -260,7 +260,7 @@ app.post('/register', (req, res) => {
     // old cookie res.cookie("user_id", newID);
 
     //new cookie
-    req.session.user_id = newID
+    req.session.user_id = newID;
     res.redirect("/urls");
   }
 });
