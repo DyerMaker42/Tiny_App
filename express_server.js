@@ -4,8 +4,12 @@ const PORT = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
-var cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session')
 
+const generateRandomString = require("./helpers");
+const getUserbyEmail = require("./helpers");
+const getUserby = require("./helpers");
+const urlsForUser = require("./helpers");
 //app middleware---------------------------------------
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,7 +18,7 @@ app.use(cookieSession({
   user_ID:'session',
   keys:['scaryKeyScary'],
   maxAge: 5*60*1000
-}))
+}));
 //app constants and variables---------------------------------
 //old DB
 // const urlDatabase = {
@@ -47,7 +51,7 @@ const users = {
   },
   
 };
-
+/*
 //app functions================================================
 //generates 6 digit string (ie Uoh87x)
 const generateRandomString = () => {
@@ -64,6 +68,7 @@ const generateRandomString = () => {
   }
   return array.join('');
 };
+*/
 
 ///**helper function that retrieves user id bu email,///
 function getUserbyEmail(userEmail, database) {
