@@ -137,6 +137,14 @@ app.get("/register", (req, res) => {
   const templateVars = { user, users };
   res.render("registration", templateVars);
 });
+
+app.get("/login", (req,res) => {
+  let user_id = req.cookies["user_id"];
+  const user = users[user_id];
+  const templateVars = { user, users };
+
+  res.render("login", templateVars)
+})
 //===========================================================
 //POST Routes
 //adds new URL to db
@@ -165,10 +173,25 @@ app.post("/urls/:id", (req, res) => {
 });
 //sets cookie
 app.post("/login", (req, res) => {
-  const user = getUserbyEmail(req.body.userEmail, users);
-  console.log(user.id, "THIS");
-  res.cookie("user_id", user.id);
-  res.redirect("/urls");
+console.log(req.body)
+  const user = getUserbyEmail(req.body.email, users);
+  const goodPass = getUserby(req.body.email,users,email,password) === req.body.password;
+  if(!user){
+    res.status(403).send("Sorry that email cannot be found, please try again")
+  }
+  if (user && (getUserby(req.body.email,users,email,password) !== req.body.password)){
+    res.status(403).send("Sorry, username and password combination is invalid, please try again")
+  }
+  if(user && goodPass){
+    res.cookie("user_id", user)
+    res.redirect("/urls")
+  }
+  //If a user with that e-mail cannot be found, return a response with a 403 status code.
+////If a user with that e-mail address is located, compare the password given in the form with the existing user's password. If it does not match, return a response with a 403 status code.
+//If both checks pass, set the user_id cookie with the matching user's random ID, then redirect to /urls.
+  //console.log(user.id, "THIS");
+  //res.cookie("user_id", user.id);
+
 });
 //logouts by clearing cookie
 app.post("/logout", (req, res) => {
