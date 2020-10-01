@@ -32,8 +32,8 @@ const users = {
     email: "user2@example.com",
     password: "dishwasher-funk"
   },
-  "kungFooKenny": {
-    id: "kungFooKenny",
+  "aJ48lW": {
+    id: "aJ48lW",
     email: "kenny@pulitzer.net",
     password: "be-humble"
   }
