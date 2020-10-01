@@ -10,14 +10,14 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
 
-        <% if (!user_id) { %>
+        <% if (!user) { %>
         <form action="/login" method="POST">
           <input type="text" name="userEmail"></input>
           <label for="userID_login"></label>
           <button id="userID" type="submit" class="btn btn-outline-dark">Login</button>
         </form>
         <% } else { %>
-        <a class="navbar-text">Logged In As <%= users[user_id] %>! </a>
+        <a class="navbar-text">Logged In As <%= user.email %>! </a>
         <form action="/logout" method="POST">
           <button type="submit" class="btn btn-outline-dark">Logout</button>
         </form>
