@@ -10,9 +10,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //app constants and variables---------------------------------
+//old DB
+// const urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
+
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
 
 const users = {
@@ -126,7 +132,7 @@ app.get("/urls/:shortURL", (req, res) => {
   }
   const templateVars = {
     shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
+    longURL: urlDatabase[req.params.shortURL].longURL,
     user,
     users
   };
@@ -135,8 +141,12 @@ app.get("/urls/:shortURL", (req, res) => {
 
 //redirects to long URL
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+  const shortURL=req.params.shortURL;
+  console.log("!hort URL", shortURL);
+  const urlRecord = urlDatabase[shortURL];
+  console.log("!url record",urlRecord);
+  console.log("longURL", urlRecord.longURL);
+  res.redirect(urlRecord.longURL);
 });
 
 //renders registration page
@@ -162,7 +172,9 @@ app.get("/login", (req,res) => {
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   console.log(req.body.longURL);
-  urlDatabase[newURL] = req.body.longURL;
+  urlDatabase[newURL] ={longURL: req.body.longURL,
+    userID:req.cookies["user_id"]
+  }
   if(!req.cookie){
     res.redirect("/login")
   }
