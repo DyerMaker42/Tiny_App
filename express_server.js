@@ -93,11 +93,14 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   const user = users[user_id];
+  if(!req.cookies){
+    res.redirect("/login")
+  }
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
-  console.log(user);
+  //console.log(user);
   const templateVars = { urls: urlDatabase, user, };
-  console.log(user_id);
+  //console.log(user_id);
   res.render("urls_index", templateVars);
 });
 
@@ -110,10 +113,13 @@ app.get("/urls/new", (req, res) => {
   };
   res.render("urls_new", templateVars);
 });
-
+//edit individual URLS page
 app.get("/urls/:shortURL", (req, res) => {
   const user_id = req.cookies["user_id"];
   const user = users[user_id];
+  if(!req.cookie){
+    res.redirect("/login")
+  }
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
