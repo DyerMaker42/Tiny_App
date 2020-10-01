@@ -125,7 +125,7 @@ app.get("/urls", (req, res) => {
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
   //console.log(user);
-  const templateVars = { urls: urlDatabase, user, };
+  const templateVars = { urls: userURLs, user, };
   //console.log(user_id);
   res.render("urls_index", templateVars);
 });
