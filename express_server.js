@@ -56,7 +56,7 @@ const generateRandomString = () => {
   return array.join('');
 };
 
-//helper function that retrieves user id bu email,
+///**helper function that retrieves user id bu email,///
 function getUserbyEmail(userEmail, users) {
   for (let id in users) {
     //console.log(key,"key")
@@ -76,6 +76,17 @@ function getUserby(inputValue, users, inputParameter, desiredOutput) {
 
   }
 
+}
+/*id is user_id, returns entire URL record, longURL and userID are keys of returned object.*/
+function urlsForUser(id) {
+  let outputObject = {};
+  for (let urlRecord in urlDatabase) {
+    //console.log(key,"key")
+    if (urlDatabase[urlRecord].userID === id) {
+       outputObject[urlRecord] = urlDatabase[urlRecord];
+    }
+  }
+  return;
 }
 
 //View routes
@@ -161,7 +172,7 @@ app.get("/login", (req, res) => {
   let user_id = req.cookies["user_id"];
   const user = users[user_id];
   const templateVars = { user, users };
-  if(req.cookies["user_id"]){
+  if (req.cookies["user_id"]) {
     res.redirect("/urls")
   }
   res.render("login", templateVars);
@@ -186,8 +197,8 @@ app.post("/urls", (req, res) => {
 //actually deletes a URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   //console.log(req.params.shortURL)
-  if(req.cookies["user_id"]){
-  delete urlDatabase[req.params.shortURL];
+  if (req.cookies["user_id"]) {
+    delete urlDatabase[req.params.shortURL];
   }
   res.redirect("/urls");
 });
@@ -257,3 +268,5 @@ app.post('/register', (req, res) => {
     res.redirect("/urls");
   }
 });
+
+console.log(urlsForUser("aJ48lW"))
