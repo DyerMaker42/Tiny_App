@@ -18,7 +18,9 @@ app.use(cookieParser());
 
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
-  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" },
+  imog4n: { longURL: "https://www.reddit.ca", userID: "h3h3h3" },
+  h4455i: { longURL: "https://www.mec.ca", userID: "h3h3h3" }
 };
 
 const users = {
@@ -36,6 +38,11 @@ const users = {
     id: "aJ48lW",
     email: "kenny@pulitzer.net",
     password: "be-humble"
+  },
+  "h3h3h3": {
+    id: "h3h3h3",
+    email: "eastbound@down.net",
+    password: "kennyPowers"
   }
 };
 
@@ -86,7 +93,7 @@ function urlsForUser(id) {
        outputObject[urlRecord] = urlDatabase[urlRecord];
     }
   }
-  return;
+  return outputObject;
 }
 
 //View routes
@@ -113,7 +120,8 @@ app.get("/urls", (req, res) => {
   if (!user_id) {
     res.redirect("/login")
   }
-  let urls = urlsForUser(user_id);
+  let userURLs = urlsForUser(user_id);
+  console.log((userURLs), "USER URLS TEST");
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
   //console.log(user);
