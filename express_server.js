@@ -3,6 +3,8 @@ const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const bcrypt =require('bcrypt');
+
 
 //app middleware---------------------------------------
 app.set("view engine", "ejs");
@@ -34,16 +36,12 @@ const users = {
     email: "user2@example.com",
     password: "dishwasher-funk"
   },
-  "aJ48lW": {
+  "5cWQpK": {
     id: "aJ48lW",
     email: "kenny@pulitzer.net",
-    password: "be-humble"
+    password: "$2b$10$A4IaTVv9lpzO9XR1gf4BLOWMVe99J20QyPF2H5rDy4YD8Lf2c49gG"
   },
-  "h3h3h3": {
-    id: "h3h3h3",
-    email: "eastbound@down.net",
-    password: "kennyPowers"
-  }
+  
 };
 
 //app functions================================================
@@ -239,13 +237,16 @@ app.post("/urls/:id", (req, res) => {
 });
 //sets cookie
 app.post("/login", (req, res) => {
-  console.log(req.body);
-  const user = getUserbyEmail(req.body.email, users);
-  const goodPass = getUserby(req.body.email, users, "email", "password") === req.body.password;
+  const inputEmail = req.body.email;
+  const inputPass = req.body.password;
+  const user = getUserbyEmail(inputEmail, users);
+  const storedPass = (getUserby(inputEmail, users, "email", "password"))
+  const goodPass = bcrypt.compareSync(`${inputPass}`, storedPass);
+  
   if (!user) {
     res.status(403).send("Sorry that email cannot be found, please try again");
   }
-  if (user && (getUserby(req.body.email, users, "email", "password") !== req.body.password)) {
+  if (user && (getUserby(inputEmail, users, "email", "password") !== inputPass)) {
     res.status(403).send("Sorry, username and password combination is invalid, please try again");
   }
   console.log(user, "USER TEST");
@@ -272,12 +273,14 @@ app.post('/register', (req, res) => {
   // console.log(req.params, "req.params");
   let newID = generateRandomString();
   //if email or pass is empty string
-
-  if (!req.body.email || !req.body.password) {
+  const inputPassword = req.body.password;
+  const inputEmail = req.body.email;
+  const hashedPass = bcrypt.hashSync(inputPassword, 2)
+  if (!inputEmail || !inputPassword) {
     res.status(400).send('no field can be left blank');
     //return;
   }
-  let checkUser = getUserbyEmail(req.body.email, users);
+  let checkUser = getUserbyEmail(inputEmail, users);
   console.log(checkUser);
   if (checkUser) {
     res.status(400).send('User Already exists, please login instead');
@@ -285,8 +288,8 @@ app.post('/register', (req, res) => {
   } else {
     users[newID] = {
       id: newID,
-      email: req.body.email,
-      password: req.body.password
+      email: inputEmail,
+      password: hashedPass
     };
 
     res.cookie("user_id", newID);
@@ -294,4 +297,3 @@ app.post('/register', (req, res) => {
   }
 });
 
-console.log(urlsForUser("aJ48lW"));
