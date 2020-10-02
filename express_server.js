@@ -138,13 +138,14 @@ app.get("/login", (req, res) => {
   res.render("login", templateVars);
 });
 //===========================================================
-//POST Routes
-//adds new URL to db
+                //POST Routes
 
+//adds new URL to db
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
+  //if not logged in value will be falsy
   let cookie = req.session.user_id;
-  console.log(req.body.longURL, "TESTY");
+  
   const inputURL = req.body.longURL;
   if (!cookie) {
     res.redirect("/login");
@@ -158,13 +159,10 @@ app.post("/urls", (req, res) => {
 
 //actually deletes a URL
 app.post("/urls/:shortURL/delete", (req, res) => {
-  //console.log(req.params.shortURL)
   const shortURL = req.params.shortURL;
-  const user = /*req.cookies["user_id"]*/req.session.user_id;
+  const user = req.session.user_id;
   const urlRecord = urlDatabase[shortURL];
-  console.log(shortURL, "short url")
-  console.log(user, "user");
-  console.log(urlRecord, "urlrecod")
+  
   if (user === urlRecord.userID) {
     delete urlDatabase[shortURL];
   }
