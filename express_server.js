@@ -63,15 +63,15 @@ app.listen(PORT, () => {
 app.get("/urls", (req, res) => {
   const user_id = req.session.user_id;
   const user = users[user_id];
-  
+
   if (!user_id) {
     res.redirect("/login");
   }
- 
+
   let userURLs = urlsForUser(user_id, urlDatabase);
-  
-  const templateVars = { urls: userURLs, user};
-  
+
+  const templateVars = { urls: userURLs, user };
+
   res.render("urls_index", templateVars);
 });
 
@@ -79,7 +79,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let user_id = req.session.user_id;
   const user = users[user_id];
-  const templateVars = { user, users};
+  const templateVars = { user, users };
 
   if (!user_id) {
     res.redirect("/login");
@@ -97,7 +97,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const user = users[user_id];
   const shortURL = req.params.shortURL;
   const urlRecord = urlDatabase[shortURL];
-  
+
   //checking if user should have access to page, if not error
   if (urlRecord.userID !== user_id) {
     res.status(401).send("You do not have access to this URL, please login with appropriate credentials and try again");
@@ -138,14 +138,14 @@ app.get("/login", (req, res) => {
   res.render("login", templateVars);
 });
 //===========================================================
-                //POST Routes
+//POST Routes
 
 //adds new URL to db
 app.post("/urls", (req, res) => {
   let newURL = generateRandomString();
   //if not logged in value will be falsy
   let cookie = req.session.user_id;
-  
+
   const inputURL = req.body.longURL;
   if (!cookie) {
     res.redirect("/login");
@@ -162,7 +162,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   const user = req.session.user_id;
   const urlRecord = urlDatabase[shortURL];
-  
+
   if (user === urlRecord.userID) {
     delete urlDatabase[shortURL];
   }
@@ -180,10 +180,11 @@ app.post("/urls/:id", (req, res) => {
   } else if (user !== urlRecord.userID) {
     res.status(401).send("S0rry hack3rz, no mischief for you");
   }
-  
+
   res.redirect("/urls");
 });
-//sets cookie
+
+//sets cookie and logs in
 app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPass = req.body.password;
@@ -191,27 +192,21 @@ app.post("/login", (req, res) => {
   if (!user) {
     res.status(403).send("Sorry that email cannot be found, please try again");
   }
+  
   const storedPass = (getUserby(inputEmail, users, "email", "password"));
+  //boolean value 
   const goodPass = bcrypt.compareSync(inputPass, storedPass);
   console.log(goodPass);
   if (user && !goodPass) {
     res.status(403).send("Sorry, username and password combination is invalid, please try again");
   }
-  console.log(user, "USER TEST");
+  
   if (user && goodPass) {
-    // old cookie
-    //res.cookie("user_id", user.id);
-    //new cookie
     req.session.user_id = user.id;
     res.redirect("/urls");
   }
-  //If a user with that e-mail cannot be found, return a response with a 403 status code.
-  ////If a user with that e-mail address is located, compare the password given in the form with the existing user's password. If it does not match, return a response with a 403 status code.
-  //If both checks pass, set the user_id cookie with the matching user's random ID, then redirect to /urls.
-  //console.log(user.id, "THIS");
-  //res.cookie("user_id", user.id);
-
 });
+
 //logouts by clearing cookie
 app.post("/logout", (req, res) => {
   req.session.user_id = null;
@@ -220,32 +215,26 @@ app.post("/logout", (req, res) => {
 
 //handles registration form data
 app.post('/register', (req, res) => {
-  // console.log(req.body, "req.body");
-  // console.log(req.params, "req.params");
   let newID = generateRandomString();
+
   //if email or pass is empty string
   const inputPassword = req.body.password;
   const inputEmail = req.body.email;
   const hashedPass = bcrypt.hashSync(inputPassword, 2);
   if (!inputEmail || !inputPassword) {
-    res.status(400).send('no field can be left blank');
-    //return;
+    res.status(400).send('no field can be left blank'); 
   }
+
   let checkUser = getUserbyEmail(inputEmail, users);
-  console.log(checkUser);
+  
   if (checkUser) {
     res.status(400).send('User Already exists, please login instead');
-    //return;
   } else {
     users[newID] = {
       id: newID,
       email: inputEmail,
       password: hashedPass
     };
-
-    // old cookie res.cookie("user_id", newID);
-
-    //new cookie
     req.session.user_id = newID;
     res.redirect("/urls");
   }
