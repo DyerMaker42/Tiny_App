@@ -14,7 +14,7 @@ const generateRandomString = () => {
   return array.join('');
 };
 
-///**helper function that retrieves user id bu email,///
+//helper function that retrieves user object by email
 const getUserbyEmail = (userEmail, database) => {
   for (let id in database) {
     if (database[id].email === userEmail) {
@@ -30,10 +30,9 @@ const getUserby = (inputValue, database, inputParameter, desiredOutput) => {
     if (database[key][inputParameter] === inputValue) {
       return database[key][desiredOutput];
     }
-
   }
-
 };
+
 /*id is user_id, returns entire URL record, longURL and userID are keys of returned object.*/
 const urlsForUser = (id, db) => {
   let outputObject = {};
