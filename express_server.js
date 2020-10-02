@@ -62,20 +62,16 @@ app.listen(PORT, () => {
 //renders url page
 app.get("/urls", (req, res) => {
   const user_id = req.session.user_id;
-  console.log(user_id, "USER_ID");
   const user = users[user_id];
-  console.log(user, "UUSER TEST");
+  
   if (!user_id) {
     res.redirect("/login");
   }
-  console.log("TEST USER ID", user_id);
+ 
   let userURLs = urlsForUser(user_id, urlDatabase);
-  console.log((userURLs), "USER URLS TEST");
-  // console.log(username, "user_id");
-  // console.log(req.cookies, "req.cookies");
-  //console.log(user);
-  const templateVars = { urls: userURLs, user, };
-  //console.log(user_id);
+  
+  const templateVars = { urls: userURLs, user};
+  
   res.render("urls_index", templateVars);
 });
 
