@@ -6,10 +6,8 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
 
-const generateRandomString = require("./helpers");
-const getUserbyEmail = require("./helpers");
-const getUserby = require("./helpers");
-const urlsForUser = require("./helpers");
+const { generateRandomString, getUserbyEmail, getUserby, urlsForUser } = require("./helpers");
+
 //app middleware---------------------------------------
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -78,7 +76,7 @@ app.get("/urls", (req, res) => {
     res.redirect("/login");
   }
   console.log("TEST USER ID", user_id);
-  let userURLs = urlsForUser(user_id);
+  let userURLs = urlsForUser(user_id,urlDatabase);
   console.log((userURLs), "USER URLS TEST");
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
@@ -176,8 +174,11 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   const user = /*req.cookies["user_id"]*/req.session.user_id;
   const urlRecord = urlDatabase[shortURL];
+  console.log(shortURL, "short url")
+  console.log(user, "user");
+  console.log(urlRecord, "urlrecod")
   if (user === urlRecord.userID) {
-    delete urlRecord;
+    delete urlDatabase[shortURL];
   }
   res.redirect("/urls");
 });
@@ -228,7 +229,7 @@ app.post("/login", (req, res) => {
 });
 //logouts by clearing cookie
 app.post("/logout", (req, res) => {
-  req.session = null;
+  req.session.user_id = null;
   res.redirect("/urls");
 });
 

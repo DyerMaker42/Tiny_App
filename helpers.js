@@ -37,12 +37,12 @@ const getUserby = (inputValue, database, inputParameter, desiredOutput) => {
 
 };
 /*id is user_id, returns entire URL record, longURL and userID are keys of returned object.*/
-const urlsForUser = (id) => {
+const urlsForUser = (id, db) => {
   let outputObject = {};
-  for (let urlRecord in urlDatabase) {
+  for (let urlRecord in db) {
     //console.log(key,"key")
-    if (urlDatabase[urlRecord].userID === id) {
-      outputObject[urlRecord] = urlDatabase[urlRecord];
+    if (db[urlRecord].userID === id) {
+      outputObject[urlRecord] = db[urlRecord];
     }
   }
   return outputObject;
