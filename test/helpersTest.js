@@ -1,6 +1,6 @@
 const {assert} = require('chai');
 
-const {getUserByEmail} = require('../helpers.js');
+const { generateRandomString, getUserbyEmail, getUserby, urlsForUser } = require("../helpers")
 
 const testUsers = {
   "userRandomID": {
@@ -14,3 +14,17 @@ const testUsers = {
     password: "dishwasher-funk"
   }
 };
+
+describe('getUserByEmail', function() {
+  it('should return a user with valid email', function() {
+    const user = getUserbyEmail("user@example.com", testUsers)
+    const expectedOutput = "userRandomID";
+    assert.deepEqual(user, testUsers[expectedOutput])
+  });
+
+  it('should return undefined if email does not exist', () => {
+    const user = getUserbyEmail("bob@example.com", testUsers);
+    assert.isUndefined(user)
+  })
+});
+

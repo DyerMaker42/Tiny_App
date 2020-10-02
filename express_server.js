@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
 
@@ -11,18 +11,13 @@ const { generateRandomString, getUserbyEmail, getUserby, urlsForUser } = require
 //app middleware---------------------------------------
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(cookieParser());
+
 app.use(cookieSession({
   user_ID: 'session',
   keys: ['scaryKeyScary'],
   maxAge: 5 * 60 * 1000
 }));
-//app constants and variables---------------------------------
-//old DB
-// const urlDatabase = {
-//   "b2xVn2": "http://www.lighthouselabs.ca",
-//   "9sm5xK": "http://www.google.com"
-// };
+
 
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
@@ -52,7 +47,12 @@ const users = {
 
 //View routes
 app.get("/", (req, res) => {
-  res.send("hello!");
+  const user_id = req.session.user_id
+  if (user_id) {
+    res.redirect("/urls")
+  } else {
+    res.redirect("/login")
+  }
 });
 
 app.listen(PORT, () => {
@@ -76,7 +76,7 @@ app.get("/urls", (req, res) => {
     res.redirect("/login");
   }
   console.log("TEST USER ID", user_id);
-  let userURLs = urlsForUser(user_id,urlDatabase);
+  let userURLs = urlsForUser(user_id, urlDatabase);
   console.log((userURLs), "USER URLS TEST");
   // console.log(username, "user_id");
   // console.log(req.cookies, "req.cookies");
