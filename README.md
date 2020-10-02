@@ -5,7 +5,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ## Final Product
 
 !["URLs list with logged-in user"](https://github.com/DyerMaker42/Tiny_App/blob/master/docs/logged%20in.png?raw=true)
-!["screenshot description"](#)
+!["New URL page"](https://github.com/DyerMaker42/Tiny_App/blob/master/docs/new-url-page.png?raw=true)
 
 ## Dependencies
 
