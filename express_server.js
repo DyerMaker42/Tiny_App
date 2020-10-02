@@ -171,17 +171,16 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 //edits a URL
 app.post("/urls/:id", (req, res) => {
-  // console.log(req.params.id, "what im looking for")
-  // console.log(req.body, "req.req body")
-  let shortURL = req.params.id;
-  const user = /* old req.cookies["user_id"]*/req.session.user_id;
+  const shortURL = req.params.id;
+  const user = req.session.user_id;
   const urlRecord = urlDatabase[shortURL];
+  //checks if cookie matches user id assosciated with the url 
   if (user === urlRecord.userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
   } else if (user !== urlRecord.userID) {
     res.status(401).send("S0rry hack3rz, no mischief for you");
   }
-  //console.log(res,"long edit")
+  
   res.redirect("/urls");
 });
 //sets cookie
