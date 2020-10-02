@@ -22,5 +22,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - Run the development web server using the `node express_server.js` command.
 
 ## Features
--login and then store and shorten as many URLSs as you would like.
+-login then shorten as many URLSs as you would like.
+
+- only you have access to your URL's to edit, but anyone can access the links you provide.
 
