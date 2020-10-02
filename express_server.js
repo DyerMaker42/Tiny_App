@@ -75,13 +75,12 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+//renders page 
 app.get("/urls/new", (req, res) => {
   let user_id = req.session.user_id;
   const user = users[user_id];
-  const templateVars = {
-    user,
-    users
-  };
+  const templateVars = { user, users};
+
   if (!user_id) {
     res.redirect("/login");
   } else {
