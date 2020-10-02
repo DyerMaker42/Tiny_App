@@ -97,8 +97,8 @@ app.get("/urls/:shortURL", (req, res) => {
   const user = users[user_id];
   const shortURL = req.params.shortURL;
   const urlRecord = urlDatabase[shortURL];
-  //let userURLs = urlsForUser(user_id);
-  //checking if user should have access to page
+  
+  //checking if user should have access to page, if not error
   if (urlRecord.userID !== user_id) {
     res.status(401).send("You do not have access to this URL, please login with appropriate credentials and try again");
   }
