@@ -47,11 +47,11 @@ const users = {
 
 //View routes
 app.get("/", (req, res) => {
-  const user_id = req.session.user_id
+  const user_id = req.session.user_id;
   if (user_id) {
-    res.redirect("/urls")
+    res.redirect("/urls");
   } else {
-    res.redirect("/login")
+    res.redirect("/login");
   }
 });
 
@@ -75,7 +75,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-//renders page 
+//renders page
 app.get("/urls/new", (req, res) => {
   let user_id = req.session.user_id;
   const user = users[user_id];
@@ -174,7 +174,7 @@ app.post("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
   const user = req.session.user_id;
   const urlRecord = urlDatabase[shortURL];
-  //checks if cookie matches user id assosciated with the url 
+  //checks if cookie matches user id assosciated with the url
   if (user === urlRecord.userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
   } else if (user !== urlRecord.userID) {
@@ -194,7 +194,7 @@ app.post("/login", (req, res) => {
   }
   
   const storedPass = (getUserby(inputEmail, users, "email", "password"));
-  //boolean value 
+  //boolean value
   const goodPass = bcrypt.compareSync(inputPass, storedPass);
   console.log(goodPass);
   if (user && !goodPass) {
@@ -222,7 +222,7 @@ app.post('/register', (req, res) => {
   const inputEmail = req.body.email;
   const hashedPass = bcrypt.hashSync(inputPassword, 2);
   if (!inputEmail || !inputPassword) {
-    res.status(400).send('no field can be left blank'); 
+    res.status(400).send('no field can be left blank');
   }
 
   let checkUser = getUserbyEmail(inputEmail, users);
