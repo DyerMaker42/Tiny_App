@@ -26,3 +26,4 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 - only you have access to your URL's to edit, but anyone can access the links you provide.
 
+-in order to start the server all you need to do is enter the repo folder and run "npm start"
